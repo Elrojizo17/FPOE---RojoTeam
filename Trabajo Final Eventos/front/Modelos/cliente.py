@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class Clientes:
+class Cliente():
     def __init__(self, nombre, apellido, cedula, telefono, correo):
         self.nombre = tk.StringVar(value=nombre)
         self.apellido = tk.StringVar(value=apellido)

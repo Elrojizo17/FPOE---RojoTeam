@@ -3,4 +3,5 @@ from api.models.servicio import Servicio
 
 class ServicioSerializers(serializers.ModelSerializer):
     class Meta:
-        model = Servicio 
+        model = Servicio
+        fields = '__all__'

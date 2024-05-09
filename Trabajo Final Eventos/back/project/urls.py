@@ -25,6 +25,6 @@ urlpatterns = [
     path('v1/cliente', Cliente_APIView.as_view()), 
     path('v1/cliente/<int:pk>/', Cliente_APIView_Detail.as_view()),
     path('admin/', admin.site.urls),
-    path('v2/cliente', Servicio_APIView.as_view()), 
-    path('v2/cliente/<int:pk>/', Servicio_APIView_Detail.as_view())
+    path('v1/servicio', Servicio_APIView.as_view()), 
+    path('v1/servicio/<int:pk>/', Servicio_APIView_Detail.as_view()),
 ]

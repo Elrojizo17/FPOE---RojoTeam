@@ -1,12 +1,14 @@
 import tkinter 
 import tkinter.messagebox as messagebox
 from Controladores.controladores import Controlador
+from Vistas.crear_cliente import CrearCliente
+from Vistas.crear_servicio import CrearServicio 
+from tkinter import PhotoImage
 
-
-class Vista:
+class Vista():
     def __init__(self):
         self.ventana = tkinter.Tk()        
-        self.ventana.geometry("550x200")
+        self.ventana.geometry("465x300")
         self.ventana.geometry("+500+80")
         self.ventana.title("Menú Principal")
         self.ventana.resizable(0,0)
@@ -17,6 +19,14 @@ class Vista:
         self.menu = tkinter.Menu(self.ventana)
         self.ventana.config(menu=self.menu)
         
+        logo = PhotoImage(file='C:/Users/Manuel/Desktop/Python/Eventos/FPOE---RojoTeam/Trabajo Final Eventos/front/Vistas/images/logo.png')
+
+        label_logo = tkinter.Label(self.ventana, image=logo)
+        label_logo.pack()
+
+
+
+
         self.menuClientes = tkinter.Menu(self.menu)
         self.menu.add_cascade(label= "Gestionar Clientes", menu= self.menuClientes)
         self.menuClientes.add_command(label= "Registrar Cliente", command= lambda: self.registrarCliente())
@@ -42,6 +52,10 @@ class Vista:
         self.menu.add_cascade(label= "Salir", menu= self.menuSalir)
         self.menuSalir.add_command(label= "Salir", command= lambda: self.controladores.el_usuario_quiere_salir())
 
-        messagebox.showinfo("Saludo", "Bienvenido ")
-
         self.ventana.mainloop()
+
+    def registrarCliente(self):
+            interfaz_cliente = CrearCliente(self.menu)
+
+    def registrarServicio(self):
+            interfaz_servicio = CrearServicio(self.menu)
