@@ -6,5 +6,6 @@ class Modelos:
         self.cilindraje = tk.IntVar(value=cilindraje)
         self.modelo = tk.IntVar(value=modelo)
         self.color = tk.StringVar(value=color)
+        self.id = tk.StringVar(value=id)
 
     

@@ -1,11 +1,16 @@
 import requests
-import tkinter.messagebox as messagebox
+import tkinter.messagebox as mb
 from Modelos.cliente import Cliente
+import requests
+from Controladores.controladores import Controlador
 
 class Registrar_cliente():
-    def __init__(self, vista):
+    def __init__(self, vista, tabla):
         self.vista = vista
+        self.tabla=tabla
+        self.controlador= Controlador(self.vista)
         self.cliente = Cliente("", "", "", "", "")
+        self.url="http://localhost:8000/v1/cliente"
 
     def val_nombre(self, event, widget):
         nombre_val = widget.get()
@@ -42,6 +47,8 @@ class Registrar_cliente():
         else:
             self.vista.lblCorreoAdvertencia.config(text="")
 
+    
+
     def validar(self):
         nombre = self.vista.txtNombre.get()
         apellido = self.vista.txtApellido.get()
@@ -50,30 +57,30 @@ class Registrar_cliente():
         correo = self.vista.txtCorreo.get()
 
         if not (nombre and apellido and cedula and telefono and correo):
-            messagebox.showerror("Error", "Todos los campos deben estar completos.")
+            mb.showerror("Error", "Todos los campos deben estar completos.")
             return
 
         if not nombre.replace(" ", "").isalpha():
-            messagebox.showerror("Error", "El nombre solo debe contener letras.")
+            mb.showerror("Error", "El nombre solo debe contener letras.")
             return
 
         if not apellido.replace(" ", "").isalpha():
-            messagebox.showerror("Error", "El apellido solo debe contener letras.")
+            mb.showerror("Error", "El apellido solo debe contener letras.")
             return
 
         if not cedula.isdigit():
-            messagebox.showerror("Error", "La cédula debe ser un número.")
+            mb.showerror("Error", "La cédula debe ser un número.")
             return
         
         if not telefono.isdigit():
-            messagebox.showerror("Error", "El teléfono debe ser un número.")
+            mb.showerror("Error", "El teléfono debe ser un número.")
             return
         
         if "@" not in correo:
-            messagebox.showerror("Error", "El correo no tiene arroba.")
+            mb.showerror("Error", "El correo no tiene arroba.")
             return
 
-        messagebox.showinfo("Éxito", "Cliente Registrado Exitosamente.")
+        mb.showinfo("Éxito", "Cliente Registrado Exitosamente.")
 
         self.cliente.nombre.set(nombre)
         self.cliente.apellido.set(apellido)
@@ -92,3 +99,106 @@ class Registrar_cliente():
         response = requests.post("http://localhost:8000/v1/cliente", data=data)
         print(response.status_code)
         print(response.content)
+
+
+    def actualizar(self, id, nombre, apellido, cedula, telefono, correo):
+        if not (nombre and apellido and cedula and telefono and correo):
+            mb.showerror("Error", "Debe llenar todos los campos")
+        else:
+            data = {
+            "nombre": nombre,
+            "apellido": apellido,
+            "cedula": cedula,
+            "telefono": telefono,
+            "correo": correo
+            }
+            response = requests.put(f"{self.url}/{id}/", json=data)
+            if response.status_code == 200:
+                self.controlador.limpiarcajasCliente()
+                mb.showinfo("Éxito", "El objeto ha sido actualizado exitosamente")
+                self.boton_consultar_cliente_todo()
+            elif response.status_code == 404:
+                # Intentar crear el objeto si no se encontró durante la actualización
+                response = requests.post(self.url, json=data)
+                if response.status_code == 201:
+                    self.controlador.limpiarcajasCliente()
+                    mb.showinfo("Éxito", "El objeto no existía, así que fue creado exitosamente")
+                else:
+                    self.controlador.limpiarcajasCliente()
+                    mb.showerror("Error", "No se pudo crear el objeto. Detalle: " + response.content.decode())
+            else:
+                self.controlador.limpiarcajasCliente()
+                mb.showerror("Error", "No se pudo actualizar el objeto. Detalle: " + response.content.decode())
+
+    def consultar_ciente(self,cedula):
+        resultado = requests.get(self.url + '/' + str(cedula))
+        return resultado.json()
+
+    def eliminar(self, id):
+        resultado = requests.delete(self.url + '/' + str(id))
+        return resultado.status_code
+    
+    def consultar_cliente_todo(self, nombre, apellido, cedula, telefono, correo):
+        url = self.url
+        params = {}
+        if nombre:
+            params["nombre"] = nombre
+        if apellido:
+            params["apellido"] = apellido
+        if cedula:
+            params["cedula"] = cedula
+        if telefono:
+            params["telefono"] = telefono
+        if correo:
+            params["correo"] = correo
+        if params:
+            url += "?" + "&".join([f"{key}={value}" for key, value in params.items()])
+        print(url)
+        resultado = requests.get(url)
+
+        if resultado.status_code == 200 and resultado.text:
+            return resultado.json()  # Llamar al método json()
+        else:
+            print(url)
+            print("La solicitud no obtuvo una respuesta válida")
+            return []
+
+    def boton_consultar_cliente(self, cedula):
+        resultado= self.consultar_ciente(cedula)
+        print(resultado)
+        if resultado:
+            data=[(resultado.get(id), resultado.get('nombre'),resultado.get('apellido'),resultado.get('cedula'), resultado.get('telefono'), resultado.get('correo'))]
+            self.tabla.refrescar_tablaC()
+
+    def boton_consultar_cliente_todo(self):
+        self.controlador.limpiarcajasCliente()
+        nombre= self.vista.txtNombre.get()
+        apellido= self.vista.txtApellido.get()
+        cedula= self.vista.txtCedula.get()
+        telefono= self.vista.txtTelefono.get()
+        correo= self.vista.txtCorreo.get()
+        resultados= self.consultar_cliente_todo(nombre, apellido, cedula, telefono, correo)
+        print(resultados)
+        data=[]
+        for elemento in resultados:
+            data.append((elemento.get('id'),elemento.get('nombre'),elemento.get('apellido'),elemento.get('cedula'),elemento.get('telefono'),elemento.get('correo')))
+            self.mostrar_resultados(resultados)
+        self.tabla.refrescar_tablaC(data)
+        
+
+    def mostrar_resultados(self, resultados):
+        for resultado in resultados:
+            print(resultado)
+
+    def botonFiltrarCliente(self):
+        nombre=self.vista.txtNombre.get()
+        apellido=self.vista.txtApellido.get()
+        cedula=self.vista.txtCedula.get()
+        telefono=self.vista.txtTelefono.get()
+        correo=self.vista.txtCorreo.get()
+        resultados=self.consultar_cliente_todo(nombre, apellido, cedula, telefono,correo)
+        data=[]
+        for elemento in resultados:
+            data.append((elemento.get('id'),elemento.get('nombre'),elemento.get('apellido'),elemento.get('cedula'),elemento.get('telefono'),elemento.get('correo')))
+        self.tabla.refrescar_tablaC(data)
+

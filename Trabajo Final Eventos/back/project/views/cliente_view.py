@@ -11,10 +11,28 @@ from project.serializers.clienteSerializer import ClienteSerializers
 
 class Cliente_APIView(APIView):
     def get(self, request, format=None, *args, **kwargs):
-        cliente = Cliente.objects.all()
-        serializer = ClienteSerializers(cliente, many=True)
-        
+        queryset = Cliente.objects.all()
+        nombre = self.request.query_params.get('nombre')
+        apellido = self.request.query_params.get('apellido')
+        cedula = self.request.query_params.get('cedula')
+        telefono = self.request.query_params.get('telefono')
+        correo = self.request.query_params.get('correo')
+
+        if nombre is not None:
+            queryset = queryset.filter(nombre=nombre)
+        if apellido is not None:
+            queryset = queryset.filter(apellido=apellido)
+        if cedula is not None:
+            queryset = queryset.filter(cedula=cedula)
+        if telefono is not None:
+            queryset = queryset.filter(telefono=telefono)
+        if correo is not None:
+            queryset = queryset.filter(correo=correo)
+
+        serializer = ClienteSerializers(queryset, many=True)
         return Response(serializer.data)
+    
+    
     def post(self, request, format=None):
         serializer = ClienteSerializers(data=request.data)
         if serializer.is_valid():

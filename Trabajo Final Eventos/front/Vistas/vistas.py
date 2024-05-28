@@ -43,12 +43,6 @@ class Vista():
         self.menuServicios = tkinter.Menu(self.menu)
         self.menu.add_cascade(label="Gestionar Servicios", menu=self.menuServicios)
         self.menuServicios.add_command(label="Registrar Servicio", command=lambda: self.registrarServicio())
-        self.menuServicios.add_separator()
-        self.menuServicios.add_command(label="Actualizar Servicio", command=lambda: self.actualizarServicio())
-        self.menuServicios.add_separator()
-        self.menuServicios.add_command(label="Borrar Servicio", command=lambda: self.borrarServicio())
-        self.menuServicios.add_separator()
-        self.menuServicios.add_command(label="Consultar Servicio", command=lambda: self.consultarServicio())
 
         self.menuSalir = tkinter.Menu(self.menu)
         self.menu.add_cascade(label="Salir", menu=self.menuSalir)
