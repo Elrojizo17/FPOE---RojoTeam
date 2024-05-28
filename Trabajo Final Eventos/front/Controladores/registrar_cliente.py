@@ -2,7 +2,8 @@ import requests
 import tkinter.messagebox as mb
 from Modelos.cliente import Cliente
 import requests
-from Controladores.controladores import Controlador
+from Controladores.controladores import Controlador 
+import tkinter.messagebox as messagebox
 
 class Registrar_cliente():
     def __init__(self, vista, tabla):
@@ -133,11 +134,17 @@ class Registrar_cliente():
     def consultar_ciente(self,cedula):
         resultado = requests.get(self.url + '/' + str(cedula))
         return resultado.json()
+    
 
     def eliminar(self, id):
         resultado = requests.delete(self.url + '/' + str(id))
-        return resultado.status_code
-    
+        if resultado.status_code == 204:
+            messagebox.showinfo("Éxito", "Servicio eliminado correctamente.")
+            self.boton_consultar_cliente_todo()  # Refresca la tabla después de eliminar
+        else:
+            messagebox.showerror("Error", "No se pudo eliminar el servicio.")
+
+        
     def consultar_cliente_todo(self, nombre, apellido, cedula, telefono, correo):
         url = self.url
         params = {}

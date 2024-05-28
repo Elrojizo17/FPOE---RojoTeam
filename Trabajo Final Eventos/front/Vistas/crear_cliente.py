@@ -71,7 +71,7 @@ class CrearCliente():
         # Buttons
         self.btnGuardar = tk.Button(self.ventana, text="Validar", command=self.controladores.validar)
         self.btnGuardar.grid(row=11, column=1, padx=15, pady=15)
-        self.btnConsultar_cliente=tk.Button(self.ventana, text="Consultar Cédula", command=self.controladores.botonFiltrarCliente)
+        self.btnConsultar_cliente=tk.Button(self.ventana, text="Consultar Cédula", command=self.controladores.botonFiltrarCliente())
         self.btnConsultar_cliente.grid(row=11, column=0, padx=15, pady=15)
         self.btnConsultar_todo = tk.Button(self.ventana, text="Consultar todo", command=lambda: self.controladores.boton_consultar_cliente_todo())
         self.btnConsultar_todo.grid(row=12, column=0, padx=15, pady=15)
@@ -112,7 +112,8 @@ class CrearCliente():
             self.txtCorreo.delete(0,tk.END)
             self.txtCorreo.insert(0,str(valores[5]))
 
-    def borrar_elementoC(self,event):
+    def borrar_elementoC(self, event):
         for i in self.tabla.tabla_C.selection():
-            self.controladores.eliminar(self.tabla.tabla_C.item(i)['values'])
+            cliente_id = self.tabla.tabla_C.item(i)['values'][0]  # Obtener el ID del cliente
+            self.controladores.eliminar(cliente_id)  # Llamar a la función eliminar con el ID
             self.tabla.tabla_C.delete(i)
