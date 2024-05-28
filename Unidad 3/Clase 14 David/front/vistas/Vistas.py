@@ -60,7 +60,10 @@ class Vista:
         self.botonActualizar = tkinter.Button(self.ventana, text="Salir", command=self.controladores.el_usuario_quiere_salir)
         self.botonActualizar.grid(column=1, row=8, padx=15, pady=15)
 
-        self.tabla.tabla.grid(column=0, row=9, columnspan=2, padx=15, pady=15)
+        self.botonLimpiar = tkinter.Button(self.ventana, text="Limpiar Campos", command=self.limpiar_campos)
+        self.botonLimpiar.grid(column=0, row=9, padx=15, pady=15)
+
+        self.tabla.tabla.grid(column=0, row=10, columnspan=2, padx=15, pady=15)
 
         def seleccionar_elemento(_):
             for i in self.tabla.tabla.selection():
@@ -82,12 +85,7 @@ class Vista:
                 self.tabla.tabla.delete(i)
                 messagebox.showinfo("Exito", "Papi esa mierda se borro")
 
-                self.txtMarca.delete(0, tkinter.END)
-                self.txtCilindraje.delete(0, tkinter.END)
-                self.txtModelo.delete(0, tkinter.END)
-                self.txtColor.delete(0, tkinter.END)
-                self.txtId.delete(0, tkinter.END)
-                self.txtMarca.focus_set()
+                self.limpiar_campos()
         
         self.controladores.boton_consultar_todo()
 
@@ -95,6 +93,13 @@ class Vista:
         self.tabla.tabla.bind('<Delete>', borrar_elemento)
 
         self.ventana.mainloop()
-
+    def limpiar_campos(self):
+        self.txtMarca.delete(0, tkinter.END)
+        self.txtCilindraje.delete(0, tkinter.END)
+        self.txtModelo.delete(0, tkinter.END)
+        self.txtColor.delete(0, tkinter.END)
+        self.txtId.delete(0, tkinter.END)
+        self.txtMarca.focus_set()
+        
 
 
