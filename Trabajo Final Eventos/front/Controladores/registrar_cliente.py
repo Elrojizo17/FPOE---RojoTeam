@@ -102,34 +102,98 @@ class Registrar_cliente():
         print(response.content)
 
 
-    def actualizar(self, id, nombre, apellido, cedula, telefono, correo):
+    def validar(self):
+        nombre = self.vista.txtNombre.get()
+        apellido = self.vista.txtApellido.get()
+        cedula = self.vista.txtCedula.get()
+        telefono = self.vista.txtTelefono.get()
+        correo = self.vista.txtCorreo.get()
+
         if not (nombre and apellido and cedula and telefono and correo):
-            mb.showerror("Error", "Debe llenar todos los campos")
-        else:
-            data = {
+            mb.showerror("Error", "Todos los campos deben estar completos.")
+            return
+
+        if not nombre.replace(" ", "").isalpha():
+            mb.showerror("Error", "El nombre solo debe contener letras.")
+            return
+
+        if not apellido.replace(" ", "").isalpha():
+            mb.showerror("Error", "El apellido solo debe contener letras.")
+            return
+
+        if not cedula.isdigit():
+            mb.showerror("Error", "La cédula debe ser un número.")
+            return
+        
+        if not telefono.isdigit():
+            mb.showerror("Error", "El teléfono debe ser un número.")
+            return
+        
+        if "@" not in correo:
+            mb.showerror("Error", "El correo no tiene arroba.")
+            return
+
+        mb.showinfo("Éxito", "Cliente Registrado Exitosamente.")
+
+        self.cliente.nombre.set(nombre)
+        self.cliente.apellido.set(apellido)
+        self.cliente.cedula.set(cedula)
+        self.cliente.telefono.set(telefono)
+        self.cliente.correo.set(correo)
+
+        data = {
             "nombre": nombre,
             "apellido": apellido,
             "cedula": cedula,
             "telefono": telefono,
             "correo": correo
-            }
+        }
+
+        response = requests.post("http://localhost:8000/v1/cliente", data=data)
+        print(response.status_code)
+        print(response.content)
+
+
+    def actualizar(self, id, nombre, apellido, cedula, telefono, correo):
+        if not (nombre and apellido and cedula and telefono and correo):
+            mb.showerror("Error", "Debe llenar todos los campos.")
+            return
+
+        data = {
+            "nombre": nombre,
+            "apellido": apellido,
+            "cedula": cedula,
+            "telefono": telefono,
+            "correo": correo
+        }
+
+        try:
             response = requests.put(f"{self.url}/{id}/", json=data)
+            print("URL de la solicitud:", response.request.url)  # Imprimir la URL utilizada para la solicitud
+            print("Datos enviados:", data)  # Imprimir los datos enviados
+            print("Código de respuesta:", response.status_code)  # Imprimir el código de respuesta
+
             if response.status_code == 200:
                 self.controlador.limpiarcajasCliente()
-                mb.showinfo("Éxito", "El objeto ha sido actualizado exitosamente")
+                mb.showinfo("Éxito", "El objeto ha sido actualizado exitosamente.")
                 self.boton_consultar_cliente_todo()
             elif response.status_code == 404:
                 # Intentar crear el objeto si no se encontró durante la actualización
                 response = requests.post(self.url, json=data)
                 if response.status_code == 201:
                     self.controlador.limpiarcajasCliente()
-                    mb.showinfo("Éxito", "El objeto no existía, así que fue creado exitosamente")
+                    mb.showinfo("Éxito", "El objeto no existía, así que fue creado exitosamente.")
                 else:
+                    print("Error de creación:", response.status_code, response.content.decode())  # Depuración adicional
                     self.controlador.limpiarcajasCliente()
                     mb.showerror("Error", "No se pudo crear el objeto. Detalle: " + response.content.decode())
             else:
+                print("Error de actualización:", response.status_code, response.content.decode())  # Depuración adicional
                 self.controlador.limpiarcajasCliente()
                 mb.showerror("Error", "No se pudo actualizar el objeto. Detalle: " + response.content.decode())
+        except requests.RequestException as e:
+            print("Excepción de solicitud:", str(e))  # Depuración adicional
+            mb.showerror("Error", "Hubo un problema con la solicitud: " + str(e))
 
     def consultar_ciente(self,cedula):
         resultado = requests.get(self.url + '/' + str(cedula))

@@ -99,33 +99,54 @@ class Registrar_servicio():
         print(response.content)
     
     def actualizarServicio(self, id, nombre_servicio, cedula_cliente, descripcion, valor):
+        print("Iniciando actualización de servicio")
+        print(f"ID: {id}")
+        print(f"Nombre Servicio: {nombre_servicio}")
+        print(f"Cédula Cliente: {cedula_cliente}")
+        print(f"Descripción: {descripcion}")
+        print(f"Valor: {valor}")
+
         if not (nombre_servicio and cedula_cliente and descripcion and valor):
+            print("Error: Todos los campos son obligatorios")
             messagebox.showerror("Error", "Debe llenar todos los campos")
-        else:
-            data = {
-                "nombre_servicio": nombre_servicio,
-                "cedula_cliente": cedula_cliente,
-                "descripcion": descripcion,
-                "valor": valor
-            }
+            return
+
+        data = {
+            "nombre_servicio": nombre_servicio,
+            "cedula_cliente": cedula_cliente,
+            "descripcion": descripcion,
+            "valor": valor
+        }
+        print("Datos a enviar:", data)
+
+        try:
             response = requests.put(f"{self.url}/{id}/", json=data)
+            print("Código de respuesta:", response.status_code)
+            print("Contenido de respuesta:", response.content)
+
             if response.status_code == 200:
+                print("Actualización exitosa")
                 self.controlador.limpiarcajasServicio()
                 messagebox.showinfo("Éxito", "El servicio ha sido actualizado exitosamente")
                 self.boton_consultar_servicio_todo()
             elif response.status_code == 404:
-                # Intentar crear el servicio si no se encontró durante la actualización
+                print("Servicio no encontrado, intentando crear uno nuevo")
                 response = requests.post(self.url, json=data)
                 if response.status_code == 201:
+                    print("Servicio creado exitosamente")
                     self.controlador.limpiarcajasServicio()
                     messagebox.showinfo("Éxito", "El servicio no existía, así que fue creado exitosamente")
                 else:
+                    print("Error al crear el servicio")
                     self.controlador.limpiarcajasServicio()
                     messagebox.showerror("Error", "No se pudo crear el servicio. Detalle: " + response.content.decode())
             else:
+                print("Error en la actualización del servicio")
                 self.controlador.limpiarcajasServicio()
                 messagebox.showerror("Error", "No se pudo actualizar el servicio. Detalle: " + response.content.decode())
-
+        except Exception as e:
+            print("Excepción durante la solicitud:", str(e))
+            messagebox.showerror("Error", f"Error al realizar la solicitud: {str(e)}")
     def consultar_servicio(self,cedula_cliente):
         resultado = requests.get(self.url + '/' + str(cedula_cliente))
 

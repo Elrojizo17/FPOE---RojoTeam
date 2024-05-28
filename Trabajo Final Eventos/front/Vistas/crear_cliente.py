@@ -36,47 +36,47 @@ class CrearCliente():
 
         # Apellido
         self.lblApellido = tk.Label(self.ventana, text="Apellido: ")
-        self.lblApellido.grid(row=3, column=0, padx=15, pady=15)
+        self.lblApellido.grid(row=2, column=0, padx=15, pady=15)
         self.txtApellido = tk.Entry(self.ventana, width=20, textvariable=self.apellido)
-        self.txtApellido.grid(row=3, column=1, padx=15, pady=15)
+        self.txtApellido.grid(row=2, column=1, padx=15, pady=15)
         self.txtApellido.bind("<KeyRelease>", lambda event: self.controladores.val_apellido(event, self.txtApellido))
 
         # Cédula
         self.lblCedula = tk.Label(self.ventana, text="Cédula: ")
-        self.lblCedula.grid(row=5, column=0, padx=15, pady=15)
+        self.lblCedula.grid(row=3, column=0, padx=15, pady=15)
         self.txtCedula = tk.Entry(self.ventana, width=20, textvariable=self.cedula)
-        self.txtCedula.grid(row=5, column=1, padx=15, pady=15)
+        self.txtCedula.grid(row=3, column=1, padx=15, pady=15)
         self.txtCedula.bind("<KeyRelease>", lambda event: self.controladores.val_cedula(event, self.txtCedula))
 
         # Teléfono
         self.lblTelefono = tk.Label(self.ventana, text="Teléfono: ")
-        self.lblTelefono.grid(row=7, column=0, padx=15, pady=15)
+        self.lblTelefono.grid(row=4, column=0, padx=15, pady=15)
         self.txtTelefono = tk.Entry(self.ventana, width=20, textvariable=self.telefono)
-        self.txtTelefono.grid(row=7, column=1, padx=15, pady=15)
+        self.txtTelefono.grid(row=4, column=1, padx=15, pady=15)
         self.txtTelefono.bind("<KeyRelease>", lambda event: self.controladores.val_telefono(event, self.txtTelefono))
 
         # Correo
         self.lblCorreo = tk.Label(self.ventana, text="Correo: ")
-        self.lblCorreo.grid(row=9, column=0, padx=15, pady=15)
+        self.lblCorreo.grid(row=5, column=0, padx=15, pady=15)
         self.txtCorreo = tk.Entry(self.ventana, width=20, textvariable=self.correo)
-        self.txtCorreo.grid(row=9, column=1, padx=15, pady=15)
+        self.txtCorreo.grid(row=5, column=1, padx=15, pady=15)
         self.txtCorreo.bind("<KeyRelease>", lambda event: self.controladores.val_correo(event, self.txtCorreo))
 
         #ID
         self.lblID=tk.Label(self.ventana, text="ID: ")
-        self.lblID.grid(row=10, column=0, padx=15, pady=15)
+        self.lblID.grid(row=6, column=0, padx=15, pady=15)
         self.txtID=tk.Entry(self.ventana, width=20, textvariable=self.id)
-        self.txtID.grid(row=10, column=1, padx=15, pady=15)
+        self.txtID.grid(row=6, column=1, padx=15, pady=15)
 
         # Buttons
         self.btnGuardar = tk.Button(self.ventana, text="Validar", command=self.controladores.validar)
-        self.btnGuardar.grid(row=11, column=1, padx=15, pady=15)
-        self.btnConsultar_cliente=tk.Button(self.ventana, text="Consultar Cédula", command=self.controladores.botonFiltrarCliente())
-        self.btnConsultar_cliente.grid(row=11, column=0, padx=15, pady=15)
+        self.btnGuardar.grid(row=7, column=1, padx=15, pady=15)
+        self.btnConsultar_cliente=tk.Button(self.ventana, text="Consultar Cédula", command=self.controladores.botonFiltrarCliente)
+        self.btnConsultar_cliente.grid(row=7, column=0, padx=15, pady=15)
         self.btnConsultar_todo = tk.Button(self.ventana, text="Consultar todo", command=lambda: self.controladores.boton_consultar_cliente_todo())
-        self.btnConsultar_todo.grid(row=12, column=0, padx=15, pady=15)
+        self.btnConsultar_todo.grid(row=8, column=0, padx=15, pady=15)
         self.Actualizar_cliente = tk.Button(self.ventana, text="Actualizar", command=lambda: self.controladores.actualizar(self.id.get(),self.nombre.get(),self.apellido.get(),self.cedula.get(),self.telefono.get(),self.correo.get()))
-        self.Actualizar_cliente.grid(row=12, column=1, padx=15, pady=15)
+        self.Actualizar_cliente.grid(row=8, column=1, padx=15, pady=15)
 
         # Advertencias
         self.lblNombreAdvertencia = tk.Label(self.ventana, text="", fg="red")
@@ -92,7 +92,7 @@ class CrearCliente():
 
     
 
-        self.tabla.tabla_C.grid(row=14, column=0, columnspan=2)
+        self.tabla.tabla_C.grid(row=9, column=0, columnspan=2,padx=15, pady=15)
         self.tabla.tabla_C.bind('<<TreeviewSelect>>',self.seleccionar_elementoC)
         self.tabla.tabla_C.bind('<Delete>',self.borrar_elementoC)
 
