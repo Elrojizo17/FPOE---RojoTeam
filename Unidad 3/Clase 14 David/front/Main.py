@@ -1,6 +1,6 @@
 from vistas.Vistas import Vista
-class Main():
 
+class Main():
     def main():
         app = Vista()
     main()

@@ -9,12 +9,13 @@ class Vista:
         titulos = ['Identificador', 'Marca', 'Cilindraje', 'Modelo', 'Color']
         columnas = ['id', 'marca', 'cilindraje', 'modelo', 'color']
         data = []
+        
         self.ventana = tkinter.Tk()
         self.ventana.title("Moto")
         self.tabla = Tabla(self.ventana, titulos, columnas, data)
         self.controladores = Controlador(self, self.tabla)
 
-        self.ventana.resizable(0,0)
+        self.ventana.resizable(0, 0)
 
         self.label1 = tkinter.Label(self.ventana, text="Marca")
         self.label1.grid(column=0, row=0, padx=15, pady=15)
@@ -36,43 +37,39 @@ class Vista:
         self.txtColor = tkinter.Entry(self.ventana, width=20)
         self.txtColor.grid(column=1, row=3)
 
-        self.labelIdTabla = tkinter.Label(self.ventana, text="Id Tabla")
-        self.labelIdTabla.grid(column=0, row=4, padx=15, pady=15)
-        self.txtIdTabla = tkinter.Entry(self.ventana, width=20)
-        self.txtIdTabla.grid(column=1, row=4)
-
         self.label5 = tkinter.Label(self.ventana, text="Consultar ID")
         self.label5.grid(column=0, row=5, padx=15, pady=15)
         self.txtId = tkinter.Entry(self.ventana, width=20)
         self.txtId.grid(column=1, row=5)
 
-        self.boton1 = tkinter.Button(self.ventana, text="Salir", command=self.controladores.el_usuario_quiere_salir)
+        self.boton1 = tkinter.Button(self.ventana, text="Consultar todo", command=self.controladores.boton_consultar_todo)
         self.boton1.grid(column=0, row=6, padx=15, pady=15)
 
-        self.boton3 = tkinter.Button(self.ventana, text="Validar", command=lambda: self.controladores.diligenciar())
+        self.boton3 = tkinter.Button(self.ventana, text="Guardar", command=lambda: self.controladores.diligenciar())
         self.boton3.grid(column=1, row=6, padx=15, pady=15)
 
-        self.botonConsultar = tkinter.Button(self.ventana, text="Consultar", command=lambda: self.controladores.boton_consultar(self.txtId.get()))
+        self.botonConsultar = tkinter.Button(self.ventana, text="Consultar por Id", command=lambda: self.controladores.boton_consultar(self.txtId.get()))
         self.botonConsultar.grid(column=0, row=7, padx=15, pady=15)
 
-        self.botonConsultarTodo = tkinter.Button(self.ventana, text="Consultar Todo", command=self.controladores.boton_consultar_todo)
+        self.botonConsultarTodo = tkinter.Button(self.ventana, text="Actualizar", command=lambda: self.controladores.actualizar(self.txtId.get(), self.txtMarca.get(), self.txtCilindraje.get(), self.txtModelo.get(), self.txtColor.get()))
         self.botonConsultarTodo.grid(column=1, row=7, padx=15, pady=15)
 
-        self.botonFiltrar = tkinter.Button(self.ventana, text="Filtrar", command=self.controladores.boton_filtar)
+        self.botonFiltrar = tkinter.Button(self.ventana, text="Consultar por Filtro", command=lambda: self.controladores.boton_filtar())
         self.botonFiltrar.grid(column=0, row=8, padx=15, pady=15)
 
-        self.botonActualizar = tkinter.Button(self.ventana, text="Actualizar", command=lambda: self.controladores.actualizar(self.txtIdTabla.get(), self.txtMarca.get(), self.txtCilindraje.get(), self.txtModelo.get(), self.txtColor.get()))
+        self.botonActualizar = tkinter.Button(self.ventana, text="Salir", command=self.controladores.el_usuario_quiere_salir)
         self.botonActualizar.grid(column=1, row=8, padx=15, pady=15)
 
-        
+        self.botonLimpiar = tkinter.Button(self.ventana, text="Limpiar Campos", command=self.limpiar_campos)
+        self.botonLimpiar.grid(column=0, row=9, padx=15, pady=15)
 
-        self.tabla.tabla.grid(column=0, row=9, columnspan=2)
+        self.tabla.tabla.grid(column=0, row=10, columnspan=2, padx=15, pady=15)
 
         def seleccionar_elemento(_):
             for i in self.tabla.tabla.selection():
                 valores = self.tabla.tabla.item(i)['values']
-                self.txtIdTabla.delete(0, tkinter.END)
-                self.txtIdTabla.insert(0, valores[0])
+                self.txtId.delete(0, tkinter.END)
+                self.txtId.insert(0, valores[0])
                 self.txtMarca.delete(0, tkinter.END)
                 self.txtMarca.insert(0, valores[1])
                 self.txtCilindraje.delete(0, tkinter.END)
@@ -86,14 +83,23 @@ class Vista:
             for i in self.tabla.tabla.selection():
                 self.controladores.eliminar(self.tabla.tabla.item(i)['values'][0])
                 self.tabla.tabla.delete(i)
-                messagebox.showinfo("Exito","Papi esa mierda se borro")
+                messagebox.showinfo("Exito", "Papi esa mierda se borro")
+
+                self.limpiar_campos()
+        
+        self.controladores.boton_consultar_todo()
 
         self.tabla.tabla.bind('<<TreeviewSelect>>', seleccionar_elemento)
         self.tabla.tabla.bind('<Delete>', borrar_elemento)
 
         self.ventana.mainloop()
-
+    def limpiar_campos(self):
+        self.txtMarca.delete(0, tkinter.END)
+        self.txtCilindraje.delete(0, tkinter.END)
+        self.txtModelo.delete(0, tkinter.END)
+        self.txtColor.delete(0, tkinter.END)
+        self.txtId.delete(0, tkinter.END)
+        self.txtMarca.focus_set()
         
-
 
 

@@ -1,6 +1,8 @@
 import tkinter.messagebox as messagebox
 import requests
 from vistas.tabla import Tabla
+import tkinter as tk
+import tkinter
 
 class Controlador:
     def __init__(self, vista, tabla):
@@ -36,6 +38,7 @@ class Controlador:
             return False
         return True
 
+
     def diligenciar(self):
         marca = self.vista.txtMarca.get()
         cilindraje = self.vista.txtCilindraje.get()
@@ -66,17 +69,37 @@ class Controlador:
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al enviar los datos al servidor: {e}")
 
+        self.vista.txtMarca.delete(0, tkinter.END)
+        self.vista.txtCilindraje.delete(0, tkinter.END)
+        self.vista.txtModelo.delete(0, tkinter.END)
+        self.vista.txtColor.delete(0, tkinter.END)
+        self.vista.txtId.delete(0, tkinter.END)
+        self.vista.txtMarca.focus_set()
+
     def boton_consultar(self, id):
+        data = []
         resultado = self.consultar(id)
-        print(resultado)
+
+        if isinstance(resultado, dict):
+            data.append((resultado.get('id'), resultado.get('marca'), resultado.get('cilindraje'), resultado.get('modelo'), resultado.get('color')))
+
+        self.vista.tabla.refrescar(data)
+
+        self.vista.txtId.delete(0, tkinter.END)
+
+        self.vista.txtMarca.delete(0, tkinter.END)
+        self.vista.txtCilindraje.delete(0, tkinter.END)
+        self.vista.txtModelo.delete(0, tkinter.END)
+        self.vista.txtColor.delete(0, tkinter.END)
+        self.vista.txtId.delete(0, tkinter.END)
+        self.vista.txtMarca.focus_set()
+
 
     def boton_consultar_todo(self):
         marca = self.vista.txtMarca.get()
         cilindraje = self.vista.txtCilindraje.get()
         modelo = self.vista.txtModelo.get()
         color = self.vista.txtColor.get()
-
-
         data = []
         resultados = self.consultar_todo(marca, cilindraje, modelo, color)
         for elemento in resultados:
@@ -91,6 +114,16 @@ class Controlador:
         color = self.vista.txtColor.get()
         resultados = self.consultar_todo(marca, cilindraje, modelo, color)
         self.mostrar_resultados(resultados)
+        data = []
+        for elemento in resultados:
+            data.append((elemento.get('id'), elemento.get('marca'), elemento.get('cilindraje'), elemento.get('modelo'), elemento.get('color')))
+        self.vista.tabla.refrescar(data)
+        self.vista.txtMarca.delete(0, tkinter.END)
+        self.vista.txtCilindraje.delete(0, tkinter.END)
+        self.vista.txtModelo.delete(0, tkinter.END)
+        self.vista.txtColor.delete(0, tkinter.END)
+        self.vista.txtId.delete(0, tkinter.END)
+        self.vista.txtMarca.focus_set()
 
     def mostrar_resultados(self, resultados):
         for resultado in resultados:
@@ -117,10 +150,16 @@ class Controlador:
             url += "color=" + color + "&"
         print(url)
         resultado = requests.get(url)
-
         return resultado.json()
+    
 
     def actualizar(self, id, marca, cilindraje, modelo, color):
+        id = self.vista.txtId.get()
+        marca = self.vista.txtMarca.get()
+        cilindraje = self.vista.txtCilindraje.get()
+        modelo = self.vista.txtModelo.get()
+        color = self.vista.txtColor.get()
+        
         if not (marca and cilindraje and modelo and color):
             messagebox.showerror("Error", "Todos los campos deben estar completos")
             return
@@ -141,11 +180,16 @@ class Controlador:
         print(f"Data: {data}")
 
         response = requests.put(url, json=data)
+        messagebox.showinfo("Éxito", "Actualización exitosa")
+
+        self.vista.txtMarca.delete(0, tkinter.END)
+        self.vista.txtCilindraje.delete(0, tkinter.END)
+        self.vista.txtModelo.delete(0, tkinter.END)
+        self.vista.txtColor.delete(0, tkinter.END)
+        self.vista.txtId.delete(0, tkinter.END)
+        self.vista.txtMarca.focus_set()
+
         self.boton_consultar_todo()
-        
-        if response.status_code == 200:
-            messagebox.showinfo("Éxito", "Actualización exitosa")
-        else:
-            messagebox.showerror("Error", f"Error al actualizar: {response.status_code}\n{response.content}")
+
 
 

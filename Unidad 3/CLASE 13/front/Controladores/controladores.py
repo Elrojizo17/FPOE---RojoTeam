@@ -1,9 +1,11 @@
 import tkinter.messagebox as messagebox
 import requests
+from vistas.tabla import Tabla
 
 class Controlador:
-    def __init__(self, vista):
+    def __init__(self, vista, tabla):
         self.vista = vista
+        self.tabla = tabla
         self.url = "http://localhost:8000/v1/moto"
 
 
@@ -49,7 +51,7 @@ class Controlador:
                 self.validar_modelo(modelo) and self.validar_color(color)):
             return
 
-        messagebox.showinfo("Exito", "La firma está bien")
+        messagebox.showinfo("Exito", "Firma, está bien")
 
         data = {
             "marca": marca,
@@ -65,6 +67,7 @@ class Controlador:
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al enviar los datos al servidor: {e}")
 
+
     def boton_consultar(self, id):
         resultado = self. consultar(id)
         print(resultado)
@@ -76,7 +79,11 @@ class Controlador:
         color = self.vista.txtColor.get()
 
         resultados = self.consultar_todo(marca, cilindraje, modelo, color)
-        self.mostrar_resultados(resultados)
+        data= []
+        for elemento in resultados:
+            data.append((elemento.get('id'), elemento.get('marca'), elemento.get('cilindraje'), elemento.get('modelo'), elemento.get('color')))
+        self.vista.tabla.refrescar(data)
+        print(resultados)
 
     def boton_filtar(self):
         marca = self.vista.txtMarca.get()
@@ -90,12 +97,17 @@ class Controlador:
         for resultado in resultados:
             print(resultado)
 
+    def eliminar(self, id):
+        resultado = requests.delete(self.url + '/' + str(id))
+        return resultado.status_code
+
     def consultar(self, id):
         resultado = requests.get(self.url + '/' + str(id))
         return resultado.json()
     
     def consultar_todo(self, marca, cilindraje, modelo, color):
         url = self.url + "?"
+
         if marca:
             url += "marca=" + marca + "&"
         if cilindraje: 
@@ -106,4 +118,39 @@ class Controlador:
             url += "color" + color + "&"
         print(url)
         resultado = requests.get(url)
+
+
         return resultado.json()
+
+
+    def actualizar(self, id, marca, cilindraje, modelo, color):
+        id = self.vista.txtId.get()
+        marca = self.vista.txtMarca.get()
+        cilindraje = self.vista.txtCilindraje.get()
+        modelo = self.vista.txtModelo.get()
+        color = self.vista.txtColor.get()
+
+        if not (marca and cilindraje and modelo and color):
+            messagebox.showerror("Error", "Todos los campos deben estar completos")
+            return
+
+        if not (self.validar_marca(marca) and self.validar_cilindraje(cilindraje) and
+                self.validar_modelo(modelo) and self.validar_color(color)):
+            return
+
+        data = {
+            "marca": marca,
+            "cilindraje": cilindraje,
+            "modelo": modelo,
+            "color": color
+        }
+
+        response = requests.put("http://localhost:8000/v1/moto" + '/' + id + '/', data=data)
+        print(response.status_code)
+        #print(response.content)
+        messagebox.showinfo("Exito", "La firma está bien")
+
+
+    
+
+
