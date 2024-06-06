@@ -1,0 +1,2 @@
+{'id': 1, 'nombre_servicio': 'asdasd', 'cedula_cliente': 1111, 'descripcion': 'asdasdasdas', 'valor': 111111}
+{'id': 3, 'nombre_servicio': 'AyudaDios', 'cedula_cliente': 123, 'descripcion': 'Jesucristo', 'valor': 10000}

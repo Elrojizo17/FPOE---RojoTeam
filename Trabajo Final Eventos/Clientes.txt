@@ -1,0 +1,10 @@
+{'id': 1, 'nombre': 'aaaa', 'apellido': 'aaaaa', 'cedula': 1111, 'telefono': 1111, 'correo': 'aaaa@aaa'}
+{'id': 2, 'nombre': 'Rojizo', 'apellido': 'Es', 'cedula': 111, 'telefono': 11, 'correo': 'gay@chimbadeinterfazono.com'}
+{'id': 3, 'nombre': 'fff', 'apellido': 'fff', 'cedula': 123, 'telefono': 123, 'correo': 'aa@aaa'}
+{'id': 4, 'nombre': 'lavelo pueas', 'apellido': 'dasdasd', 'cedula': 111, 'telefono': 111, 'correo': 'asdas@asdasd'}
+{'id': 9, 'nombre': 'Sisa', 'apellido': 'aaa', 'cedula': 1111, 'telefono': 111, 'correo': '11@kas.com'}
+{'id': 10, 'nombre': 'funcionando', 'apellido': 'qweqwe', 'cedula': 123123, 'telefono': 123123, 'correo': 'asdasd@'}
+{'id': 12, 'nombre': 'Pruebaipsisas', 'apellido': 'asdasd', 'cedula': 12345, 'telefono': 12324, 'correo': 'asdasd@sdf'}
+{'id': 13, 'nombre': 'Pruebaipdos', 'apellido': 'asdasd', 'cedula': 12345, 'telefono': 12324, 'correo': 'asdasd@sdf'}
+{'id': 14, 'nombre': 'pruebahilos', 'apellido': 'sssd', 'cedula': 1234567, 'telefono': 98765432, 'correo': 'asdasd@gaysilolee'}
+{'id': 15, 'nombre': 'LastTry', 'apellido': 'sadasd', 'cedula': 123123, 'telefono': 123123123, 'correo': 'asds@'}
