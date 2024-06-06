@@ -43,8 +43,8 @@ class Vista:
         self.ventana.mainloop()
 
     def iniciar_backup(self):
-        url_clientes = "http://192.168.62.118:8000/v1/cliente"
-        url_servicios = "http://192.168.62.118:8000/v1/servicio"
+        url_clientes = "http://localhost:8000/v1/cliente"
+        url_servicios = "http://localhost:8000/v1/servicio"
 
         backup = EjecutarBackup(url_clientes, url_servicios)
         backup.ejecutar_hilos()

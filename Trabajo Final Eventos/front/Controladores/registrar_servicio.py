@@ -8,7 +8,7 @@ class Registrar_servicio():
         self.vista = vista
         self.tabla = tabla
         self.servicio = Servicio("", "", "", "")
-        self.url="http://192.168.62.118:8000/v1/servicio"
+        self.url="http://localhost:8000/v1/servicio"
         self.controlador= Controlador(self.vista)
 
     def val_nombre_servicio(self, event, widget):
@@ -57,7 +57,7 @@ class Registrar_servicio():
             messagebox.showerror("Error", "La cédula solo debe contener números.")
             return
 
-        response = requests.get("http://192.168.62.118:8000/v1/cliente")
+        response = requests.get("http://localhost:8000/v1/cliente")
         if response.status_code != 200:
             messagebox.showerror("Error", "Error al obtener la lista de clientes.")
             return
@@ -94,7 +94,7 @@ class Registrar_servicio():
             "valor": valor
         }
 
-        response = requests.post("http://192.168.62.118/v1/servicio", data=data)
+        response = requests.post("http://localhost:8000/v1/servicio", data=data)
         print(response.status_code)
         print(response.content)
     

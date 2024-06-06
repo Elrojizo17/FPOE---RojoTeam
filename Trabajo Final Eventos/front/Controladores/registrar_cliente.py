@@ -11,7 +11,7 @@ class Registrar_cliente():
         self.tabla=tabla
         self.controlador= Controlador(self.vista)
         self.cliente = Cliente("", "", "", "", "")
-        self.url="http://192.168.62.118:8000/v1/cliente"
+        self.url="http://localhost:8000/v1/cliente"
 
     def val_nombre(self, event, widget):
         nombre_val = widget.get()
@@ -97,7 +97,7 @@ class Registrar_cliente():
             "correo": correo
         }
 
-        response = requests.post("http://192.168.62.118:8000/v1/cliente", data=data)
+        response = requests.post("http://localhost:8000/v1/cliente", data=data)
         print(response.status_code)
         print(response.content)
 
@@ -149,7 +149,7 @@ class Registrar_cliente():
             "correo": correo
         }
 
-        response = requests.post("http://192.168.62.118:8000/v1/cliente", data=data)
+        response = requests.post("http://localhost:8000/v1/cliente", data=data)
         print(response.status_code)
         print(response.content)
 

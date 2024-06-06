@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 class BackupServicios(threading.Thread):
     def __init__(self, nombrehs, url):
         threading.Thread.__init__(self, name=nombrehs)
-        self.url ="http://192.168.62.118:8000/v1/servicio"
+        self.url ="http://localhost:8000/v1/servicio"
 
     def run(self):
         while True:
