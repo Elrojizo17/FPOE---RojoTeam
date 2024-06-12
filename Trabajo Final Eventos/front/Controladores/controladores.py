@@ -15,6 +15,7 @@ class Controlador:
         self.vista.cedula.set("")
         self.vista.telefono.set("")
         self.vista.correo.set("")
+        self.vista.id.set("")
 
     
     def limpiarcajasServicio(self):
@@ -22,3 +23,4 @@ class Controlador:
         self.vista.cedula_cliente.set("")
         self.vista.descripcion.set("")
         self.vista.valor.set("")
+        self.vista.id.set("")

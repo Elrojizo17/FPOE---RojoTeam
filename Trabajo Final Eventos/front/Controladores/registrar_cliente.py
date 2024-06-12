@@ -152,6 +152,7 @@ class Registrar_cliente():
         response = requests.post("http://localhost:8000/v1/cliente", data=data)
         print(response.status_code)
         print(response.content)
+        self.boton_consultar_cliente_todo()
 
 
     def actualizar(self, id, nombre, apellido, cedula, telefono, correo):

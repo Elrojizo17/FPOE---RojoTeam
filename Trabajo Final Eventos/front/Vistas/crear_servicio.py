@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
 from Controladores.registrar_servicio import Registrar_servicio
-from .tabla_servicio import TablaServicio
+from .tabla_cliente import TablaCliente
 
 class CrearServicio():
     def __init__(self, menu):
@@ -9,7 +9,7 @@ class CrearServicio():
         self.columnas = ['id', 'nombre_servicio', 'cedula_cliente', 'descripcion', 'valor']
         data = []
         self.ventana = tk.Toplevel(menu)
-        self.tabla = TablaServicio(self.ventana, self.titulos, self.columnas, data)
+        self.tabla = TablaCliente(self.ventana, self.titulos, self.columnas, data)
         self.ventana.focus_set()
         self.ventana.title("Registrar Servicio")
         self.ventana.resizable(0, 0)
@@ -20,8 +20,9 @@ class CrearServicio():
         self.descripcion = tk.StringVar()
         self.valor = tk.StringVar()
         self.id=tk.StringVar()
-
+    
         self.crear_interfaz_servicio()
+        self.controladores.boton_consultar_servicio_todo()
 
     def crear_interfaz_servicio(self):
         # Título
@@ -64,16 +65,19 @@ class CrearServicio():
 
         # Botones
         self.btnConsultar_todo = tk.Button(self.ventana, text="Consultar todo", command=lambda: self.controladores.boton_consultar_servicio_todo())
-        self.btnConsultar_todo.grid(row=6, column=0, padx=15, pady=15)
+        self.btnConsultar_todo.grid(row=1, column=2, padx=15, pady=15)
         
         self.btnGuardar = tk.Button(self.ventana, text="Validar", command=self.controladores.validar_Servicio)
-        self.btnGuardar.grid(row=6, column=1, padx=15, pady=15)
+        self.btnGuardar.grid(row=2, column=2, padx=15, pady=15)
 
         self.btnConsultar_CC = tk.Button(self.ventana, text="Consultar Cédula del Cliente", command=self.controladores.botonFiltrarServicio)
-        self.btnConsultar_CC.grid(row=7, column=0, padx=15, pady=15)
+        self.btnConsultar_CC.grid(row=3, column=2, padx=15, pady=15)
 
         self.btnGuardar = tk.Button(self.ventana, text="Actualizar", command=lambda:self.controladores.actualizarServicio(self.id.get(),self.nombre_servicio.get(),self.cedula_cliente.get(),self.descripcion.get(),self.valor.get()))
-        self.btnGuardar.grid(row=7, column=1, padx=15, pady=15)
+        self.btnGuardar.grid(row=4, column=2, padx=15, pady=15)
+
+        self.btnBorrar = tk.Button(self.ventana, text="Borrar", command=lambda:self.controladores.controlador.limpiarcajasServicio())
+        self.btnBorrar.grid(row=5, column=2, padx=15, pady=15)
         
 
         
@@ -92,13 +96,13 @@ class CrearServicio():
         self.lblValorAdvertencia.grid(row=10, column=0, columnspan=2, padx=15, pady=5)
 
         # Tabla de servicios
-        self.tabla.tabla_S.grid(row=8, column=0, columnspan=2, padx=15, pady=15)
-        self.tabla.tabla_S.bind('<<TreeviewSelect>>', self.seleccionar_elementoS)
-        self.tabla.tabla_S.bind('<Delete>', self.borrar_elementoS)
+        self.tabla.tabla_C.grid(row=8, column=0, columnspan=3, padx=15, pady=15)
+        self.tabla.tabla_C.bind('<<TreeviewSelect>>', self.seleccionar_elementoS)
+        self.tabla.tabla_C.bind('<Delete>', self.borrar_elementoS)
 
     def seleccionar_elementoS(self, event):
-        for i in self.tabla.tabla_S.selection():
-            valores = self.tabla.tabla_S.item(i)['values']
+        for i in self.tabla.tabla_C.selection():
+            valores = self.tabla.tabla_C.item(i)['values']
             self.txtID.delete(0,tk.END)
             self.txtID.insert(0,str(valores[0]))
             self.txtNombreServicio.delete(0, tk.END)
@@ -111,7 +115,7 @@ class CrearServicio():
             self.txtValor.insert(0, str(valores[4]))
 
     def borrar_elementoS(self, event):
-        for i in self.tabla.tabla_S.selection():
-            id_servicio = self.tabla.tabla_S.item(i)['values'][0]  # Obtener el ID del servicio
+        for i in self.tabla.tabla_C.selection():
+            id_servicio = self.tabla.tabla_C.item(i)['values'][0]  # Obtener el ID del servicio
             self.controladores.eliminar(id_servicio)  # Llamar a la función eliminar con el ID
-            self.tabla.tabla_S.delete(i)
+            self.tabla.tabla_C.delete(i)

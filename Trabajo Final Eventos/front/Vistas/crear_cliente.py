@@ -22,6 +22,7 @@ class CrearCliente():
         self.id=tk.StringVar()
 
         self.crear_interfaz_cliente()
+        self.controladores.boton_consultar_cliente_todo()
 
     def crear_interfaz_cliente(self):
         self.titulo = tk.Label(self.ventana, text="Registrar Cliente")
@@ -70,13 +71,15 @@ class CrearCliente():
 
         # Buttons
         self.btnGuardar = tk.Button(self.ventana, text="Validar", command=self.controladores.validar)
-        self.btnGuardar.grid(row=7, column=1, padx=15, pady=15)
+        self.btnGuardar.grid(row=1, column=2, padx=15, pady=15)
         self.btnConsultar_cliente=tk.Button(self.ventana, text="Consultar Cédula", command=self.controladores.botonFiltrarCliente)
-        self.btnConsultar_cliente.grid(row=7, column=0, padx=15, pady=15)
+        self.btnConsultar_cliente.grid(row=2, column=2, padx=15, pady=15)
         self.btnConsultar_todo = tk.Button(self.ventana, text="Consultar todo", command=lambda: self.controladores.boton_consultar_cliente_todo())
-        self.btnConsultar_todo.grid(row=8, column=0, padx=15, pady=15)
+        self.btnConsultar_todo.grid(row=3, column=2, padx=15, pady=15)
         self.Actualizar_cliente = tk.Button(self.ventana, text="Actualizar", command=lambda: self.controladores.actualizar(self.id.get(),self.nombre.get(),self.apellido.get(),self.cedula.get(),self.telefono.get(),self.correo.get()))
-        self.Actualizar_cliente.grid(row=8, column=1, padx=15, pady=15)
+        self.Actualizar_cliente.grid(row=4, column=2, padx=15, pady=15)
+        self.btnBorrar= tk.Button(self.ventana, text="Limpiar", command=lambda:self.controladores.controlador.limpiarcajasCliente())
+        self.btnBorrar.grid(row=5, column=2, padx=15, pady=15)
 
         # Advertencias
         self.lblNombreAdvertencia = tk.Label(self.ventana, text="", fg="red")
@@ -92,7 +95,7 @@ class CrearCliente():
 
     
 
-        self.tabla.tabla_C.grid(row=9, column=0, columnspan=2,padx=15, pady=15)
+        self.tabla.tabla_C.grid(row=9, column=0, columnspan=3,padx=15, pady=15)
         self.tabla.tabla_C.bind('<<TreeviewSelect>>',self.seleccionar_elementoC)
         self.tabla.tabla_C.bind('<Delete>',self.borrar_elementoC)
 

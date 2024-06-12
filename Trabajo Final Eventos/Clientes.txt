@@ -8,3 +8,6 @@
 {'id': 13, 'nombre': 'Pruebaipdos', 'apellido': 'asdasd', 'cedula': 12345, 'telefono': 12324, 'correo': 'asdasd@sdf'}
 {'id': 14, 'nombre': 'pruebahilos', 'apellido': 'sssd', 'cedula': 1234567, 'telefono': 98765432, 'correo': 'asdasd@gaysilolee'}
 {'id': 15, 'nombre': 'LastTry', 'apellido': 'sadasd', 'cedula': 123123, 'telefono': 123123123, 'correo': 'asds@'}
+{'id': 16, 'nombre': 'Eljodiochepe', 'apellido': 'Fortunita', 'cedula': 666, 'telefono': 333, 'correo': 'chepito@chepe.com'}
+{'id': 17, 'nombre': 'Nuevo', 'apellido': 'sisas', 'cedula': 123456789, 'telefono': 11111111, 'correo': 'askdjsakdj@jkasd'}
+{'id': 18, 'nombre': 'camviao', 'apellido': 'sdasdasd', 'cedula': 12345, 'telefono': 134567, 'correo': 'kajshdkaj@gmail'}

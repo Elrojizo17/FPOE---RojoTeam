@@ -81,6 +81,7 @@ class Registrar_servicio():
             return
 
         messagebox.showinfo("Éxito", "Servicio Registrado correctamente.")
+        self.boton_consultar_servicio_todo()
 
         self.servicio.nombre_servicio.set(nombre_servicio)
         self.servicio.cedula_cliente.set(cedula_cliente)
@@ -159,11 +160,6 @@ class Registrar_servicio():
             messagebox.showerror("Error", "No se pudo eliminar el servicio.")
     
     def consultar_servicio_todo(self, nombre_servicio, cedula, descripcion, valor):
-        print("Filtrando con los siguientes valores:")
-        print("Nombre Servicio:", nombre_servicio)
-        print("Cédula Cliente:", cedula)
-        print("Descripción:", descripcion)
-        print("Valor:", valor)
         url = self.url
         params = {}
         if nombre_servicio:
@@ -203,7 +199,7 @@ class Registrar_servicio():
         for elemento in resultados:
             data.append((elemento.get('id'),elemento.get('nombre_servicio'),elemento.get('cedula_cliente'),elemento.get('descripcion'),elemento.get('valor')))
             self.mostrar_resultados(resultados)
-        self.tabla.refrescar_tablaS(data)
+        self.tabla.refrescar_tablaC(data)
     
 
     def mostrar_resultados(self, resultados):
@@ -228,4 +224,4 @@ class Registrar_servicio():
             data.append((elemento.get('id'), elemento.get('nombre_servicio'), elemento.get('cedula_cliente'), elemento.get('descripcion'), elemento.get('valor')))
         print("Datos a mostrar en la tabla:")
         print(data)
-        self.tabla.refrescar_tablaS(data)
+        self.tabla.refrescar_tablaC(data)
